@@ -1,0 +1,29 @@
+---
+// Line icons for the product-category cards. 24x24 grid, 1.6 stroke.
+const { name } = Astro.props;
+
+const paths = {
+  panel: `<rect x="2.5" y="4" width="19" height="12" rx="1.4"/><path d="M2.5 8h19M2.5 12h19M9 4v12M15 4v12M12 16v4M8.5 20h7"/>`,
+  mount: `<path d="M3 20h18M6 20V9l6-4 6 4v11"/><path d="M6 13h12M9 20v-7h6v7"/>`,
+  inverter: `<rect x="3" y="3" width="18" height="18" rx="2.2"/><path d="M7 14.5c1.5-4 3-4 4.5 0s3 4 4.5 0"/><path d="M7.5 7.5h3"/>`,
+  battery: `<rect x="2.5" y="7" width="15" height="10" rx="2"/><path d="M20 10.5v3M17.5 12h3"/><path d="m10.5 9.5-2 3.2h2.6l-1 2.3"/>`,
+  bos: `<circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="18" r="2.4"/><circle cx="6" cy="18" r="2.4"/><path d="M8.4 6H15a3 3 0 0 1 3 3v6.6M6 8.4v7.2"/>`,
+  shield: `<path d="M12 3 4.5 6v6c0 4.4 3 8 7.5 9 4.5-1 7.5-4.6 7.5-9V6Z"/><path d="m9 12 2.2 2.2L15.5 10"/>`,
+  globe: `<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18-2.6-2.6-2.6-15.4 0-18Z"/>`,
+  truck: `<path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 10h4l3 3v2.5h-7z"/><circle cx="7" cy="18" r="1.9"/><circle cx="17" cy="18" r="1.9"/>`,
+  users: `<circle cx="9" cy="8" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16 5.6a3 3 0 0 1 0 5.8M17 14.4a5.5 5.5 0 0 1 3.5 4.6"/>`,
+  spark: `<path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4M5.3 5.3l2.8 2.8M15.9 15.9l2.8 2.8M18.7 5.3l-2.8 2.8M8.1 15.9l-2.8 2.8"/><circle cx="12" cy="12" r="3.4"/>`,
+  layers: `<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/>`,
+};
+---
+
+<svg
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  set:html={paths[name] ?? paths.spark}
+/>

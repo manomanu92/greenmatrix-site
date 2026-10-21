@@ -1,0 +1,71 @@
+---
+import { site, whatsappHref } from '../data/site.js';
+---
+
+<a
+  class="wa"
+  href={whatsappHref}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label={`Chat with ${site.name} on WhatsApp`}
+>
+  <svg viewBox="0 0 32 32" aria-hidden="true">
+    <path fill="currentColor" d="M16.04 3C8.84 3 3 8.84 3 16.04c0 2.3.6 4.54 1.75 6.52L3 29l6.6-1.73a13 13 0 0 0 6.44 1.68h.01c7.2 0 13.04-5.84 13.04-13.04C29.09 8.84 23.24 3 16.04 3Zm0 23.74h-.01a10.8 10.8 0 0 1-5.5-1.51l-.4-.23-4.08 1.07 1.09-3.98-.26-.41a10.76 10.76 0 0 1-1.65-5.74c0-5.98 4.87-10.84 10.85-10.84 2.9 0 5.62 1.13 7.67 3.18a10.76 10.76 0 0 1 3.17 7.67c0 5.98-4.86 10.79-10.88 10.79Zm5.95-8.08c-.33-.16-1.93-.95-2.23-1.06-.3-.11-.52-.16-.73.17-.22.32-.84 1.05-1.03 1.27-.19.22-.38.24-.7.08-.33-.16-1.38-.51-2.63-1.62-.97-.87-1.63-1.93-1.82-2.26-.19-.33-.02-.5.14-.67.15-.15.33-.38.49-.58.17-.19.22-.33.33-.55.11-.22.06-.41-.03-.57-.08-.16-.73-1.76-1-2.41-.26-.63-.53-.55-.73-.56l-.62-.01c-.22 0-.57.08-.86.41-.3.33-1.13 1.1-1.13 2.69s1.16 3.12 1.32 3.33c.16.22 2.28 3.48 5.52 4.88.77.33 1.37.53 1.84.68.78.25 1.48.21 2.04.13.62-.09 1.93-.79 2.2-1.55.27-.76.27-1.42.19-1.55-.08-.14-.3-.22-.62-.38Z"/>
+  </svg>
+  <span class="wa__label">Chat on WhatsApp</span>
+</a>
+
+<style>
+  .wa {
+    position: fixed;
+    right: clamp(0.9rem, 3vw, 1.6rem);
+    bottom: clamp(0.9rem, 3vw, 1.6rem);
+    z-index: 90;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    padding: 0.85rem;
+    border-radius: 999px;
+    /* WhatsApp's own brand green — recognised as a platform mark. */
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(18, 90, 48, 0.3), 0 2px 6px rgba(14, 20, 36, 0.15);
+    transition: gap 0.26s var(--ease), padding 0.26s var(--ease),
+                transform 0.2s var(--ease), box-shadow 0.2s var(--ease),
+                background-color 0.2s var(--ease);
+  }
+  .wa:hover,
+  .wa:focus-visible {
+    gap: 0.6rem;
+    padding-right: 1.3rem;
+    background: #1FBA58;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(18, 90, 48, 0.36), 0 2px 6px rgba(14, 20, 36, 0.18);
+  }
+
+  .wa svg { width: 28px; height: 28px; flex: none; }
+
+  /* The label unrolls on hover; it stays in the a11y tree either way. */
+  .wa__label {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 0.92rem;
+    font-weight: 650;
+    opacity: 0;
+    transition: max-width 0.26s var(--ease), opacity 0.2s var(--ease);
+  }
+  .wa:hover .wa__label,
+  .wa:focus-visible .wa__label { max-width: 11rem; opacity: 1; }
+
+  /* On touch screens there is no hover, so keep it a compact circle. */
+  @media (hover: none) {
+    .wa__label { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wa, .wa__label { transition: none; }
+  }
+</style>

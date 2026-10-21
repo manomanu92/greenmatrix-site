@@ -1,0 +1,210 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site.js';
+import { categories } from '../data/products.js';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const whoWeAre = [
+  ['Based in Dubai, UAE', 'Your trusted partner for premium solar components'],
+  ['Specialized Supplier', 'Catering to residential, commercial, and industrial solar projects'],
+  ['Industry Expertise', 'Deep understanding of solar technology and market trends'],
+  ['Serving Professionals', 'Supporting EPC companies, contractors, developers, and installers'],
+  ['Quality & Performance', 'Ensuring access to top-tier products for enhanced system efficiency and longevity'],
+];
+
+const whyUs = [
+  ['Comprehensive Product Range', 'Everything you need under one roof'],
+  ['Quality Assurance', 'Products from trusted and globally recognized brands'],
+  ['Technical Expertise', 'Backed by years of industry experience to guide your purchases'],
+  ['Customer-Centric Approach', 'Reliable support and customized solutions tailored to your needs'],
+  ['Efficient Logistics', 'Fast & seamless delivery across the MENA region'],
+];
+---
+
+<Base
+  title="About Us"
+  description="Green Matrix Solar Energy Systems & Components Trading Co. L.L.C — a Dubai-based one-stop supplier of solar panels, mounting systems, inverters, storage and BOS components for the MENA region."
+>
+  <PageHero
+    title="About Us"
+    lead={site.legalName}
+    image="/img/plant.jpg"
+  />
+
+  <!-- Intro -->
+  <section class="section">
+    <div class="wrap about-intro">
+      <div data-reveal>
+        <p class="eyebrow">Our Company</p>
+        <h2>Powering the future with reliable solar energy solutions</h2>
+      </div>
+      <div class="lead" data-reveal>
+        <p>
+          At <strong>{site.legalName}</strong>, we are dedicated to powering the future with
+          <strong>high-quality, reliable, and efficient solar energy solutions</strong>. As a
+          <strong>one-stop shop</strong> for solar components in the <strong>MENA region</strong>,
+          we provide a comprehensive range of products to meet the growing demand for
+          renewable energy.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="section section--brand">
+    <div class="wrap mission" data-reveal>
+      <p class="eyebrow">Our Mission</p>
+      <p class="mission__text">
+        We aim to <strong>accelerate the adoption of solar energy</strong> by making
+        high-quality components <strong>accessible and affordable</strong>. Our goal is to
+        support businesses and individuals in transitioning to <strong>sustainable and
+        renewable energy solutions</strong>.
+      </p>
+    </div>
+  </section>
+
+  <!-- Who we are -->
+  <section class="section">
+    <div class="wrap split">
+      <figure class="media split__media" data-reveal>
+        <img src={base + '/img/hero.jpg'} alt="Engineer at an alternative energy plant" width="1800" height="1201" loading="lazy" />
+      </figure>
+      <div data-reveal>
+        <p class="eyebrow">Who We Are</p>
+        <h2>A specialist supplier, not a general trader</h2>
+        <ul class="checks facts">
+          {whoWeAre.map(([t, d]) => (
+            <li><strong>{t}</strong> – {d}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- What we offer -->
+  <section class="section section--surface">
+    <div class="wrap">
+      <div class="head head--center" data-reveal>
+        <p class="eyebrow">What We Offer</p>
+        <h2>We offer a wide range of high-quality solar components</h2>
+      </div>
+      <div class="grid grid--3" data-reveal>
+        {categories.map((c) => (
+          <article class="card">
+            <div class="card__icon"><Icon name={c.icon} /></div>
+            <h3>{c.name}</h3>
+            <p>{c.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why choose us -->
+  <section class="section">
+    <div class="wrap">
+      <div class="head" data-reveal>
+        <p class="eyebrow">Why Choose Us?</p>
+        <h2>Five reasons teams keep coming back</h2>
+      </div>
+      <ol class="why" data-reveal>
+        {whyUs.map(([t, d], i) => (
+          <li>
+            <span class="why__n">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="cta" data-reveal>
+        <div>
+          <h2>Looking for the best solar components for your next project?</h2>
+          <p>Contact us today to find out how we can help you harness the Sun’s power.</p>
+        </div>
+        <div class="cta__btns">
+          <a class="btn btn--gold" href={base + '/contact'}>Contact Us</a>
+          <a class="btn btn--ghost" href={base + '/products'}>See Products</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about-intro {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+  @media (max-width: 860px) { .about-intro { grid-template-columns: 1fr; } }
+
+  .mission { max-width: 70ch; margin-inline: auto; text-align: center; }
+  .mission__text { font-size: var(--step-2); line-height: 1.5; color: #D7DCF2; }
+  .mission__text strong { color: var(--gold-300); }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  @media (max-width: 880px) { .split { grid-template-columns: 1fr; } }
+  .split__media img { aspect-ratio: 4 / 3; }
+
+  .facts { margin-top: 1.6rem; }
+
+  .why {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: clamp(1.4rem, 3vw, 2.2rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: why;
+  }
+  .why li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.1rem;
+    align-items: start;
+    padding-top: 1.3rem;
+    border-top: 2px solid var(--line);
+  }
+  .why__n {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--gold-600);
+  }
+  .why h3 { margin-bottom: 0.2rem; font-size: 1.04rem; }
+  .why p { font-size: var(--step--1); }
+
+  .cta {
+    display: grid;
+    grid-template-columns: 1.5fr auto;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    padding: clamp(2rem, 5vw, 3.2rem);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(120% 160% at 100% 0%, rgba(245, 196, 0, 0.22), transparent 55%),
+      linear-gradient(120deg, var(--brand-900), var(--brand-700));
+    color: #D7DCF2;
+  }
+  @media (max-width: 800px) { .cta { grid-template-columns: 1fr; } }
+  .cta h2 { color: #fff; font-size: var(--step-2); }
+  .cta p { margin: 0; }
+  .cta__btns { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+</style>

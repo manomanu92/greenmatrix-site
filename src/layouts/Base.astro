@@ -1,0 +1,124 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { site } from '../data/site.js';
+import '../styles/global.css';
+
+const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const fullTitle = title ? `${title} | ${site.name}` : site.legalName;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={base + '/img/logo.png'} type="image/png" />
+    <meta name="theme-color" content="#22349E" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={base + '/img/hero.jpg'} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: site.legalName,
+      alternateName: site.name,
+      url: 'https://greenmatrixsolar.com',
+      email: site.email,
+      telephone: site.phone,
+      sameAs: [site.instagram],
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Jebel Ali FZ',
+        addressLocality: 'Dubai',
+        addressCountry: 'AE',
+      },
+    })} />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsAppButton />
+
+    <!-- Reveal-on-scroll, progressive: without JS everything is already visible. -->
+    <script>
+      const items = document.querySelectorAll('[data-reveal]');
+      if (items.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const show = (el) => {
+          el.classList.add('is-shown');
+          el.classList.remove('is-hidden');
+        };
+
+        // Anything already on screen stays visible — never animate the fold in.
+        const below = [];
+        items.forEach((el) => {
+          if (el.getBoundingClientRect().top < window.innerHeight) return;
+          el.classList.add('is-hidden');
+          below.push(el);
+        });
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              show(entry.target);
+              io.unobserve(entry.target);
+            });
+          },
+          // threshold 0 so a section taller than the viewport reveals as soon
+          // as its first pixel enters, even on a fast scroll or an anchor jump.
+          { rootMargin: '0px 0px -40px 0px', threshold: 0 }
+        );
+        below.forEach((el) => io.observe(el));
+
+        // Failsafe: if anything is still hidden but on screen (fast scroll,
+        // restored scroll position, observer never fired), reveal it anyway.
+        const sweep = () => {
+          document.querySelectorAll('[data-reveal].is-hidden').forEach((el) => {
+            const r = el.getBoundingClientRect();
+            if (r.top < window.innerHeight && r.bottom > 0) show(el);
+          });
+        };
+        window.addEventListener('scroll', sweep, { passive: true });
+        window.addEventListener('resize', sweep, { passive: true });
+        window.addEventListener('load', sweep);
+      }
+    </script>
+
+    <style is:global>
+      [data-reveal].is-hidden {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      [data-reveal].is-shown {
+        opacity: 1;
+        transform: none;
+        transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+      }
+    </style>
+  </body>
+</html>

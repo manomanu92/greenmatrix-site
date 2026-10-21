@@ -1,0 +1,373 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../data/site.js';
+import { categories } from '../data/products.js';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const reasons = [
+  { icon: 'layers', title: 'Comprehensive Product Range', text: 'Everything you need under one roof' },
+  { icon: 'shield', title: 'Quality Assurance', text: 'Products from trusted and globally recognized brands' },
+  { icon: 'spark', title: 'Technical Expertise', text: 'Backed by years of industry experience to guide your purchases' },
+  { icon: 'users', title: 'Customer-Centric Approach', text: 'Reliable support and customized solutions tailored to your needs' },
+  { icon: 'truck', title: 'Efficient Logistics', text: 'Fast & seamless delivery across the MENA region' },
+  { icon: 'globe', title: 'Based in Dubai, UAE', text: 'Your trusted partner for premium solar components' },
+];
+---
+
+<Base
+  title="Solar Components Supplier in Dubai, UAE"
+  description="Green Matrix supplies high-quality solar panels, mounting systems, inverters, energy storage and BOS components across the MENA region. Authorised distributor of S-5! USA."
+>
+  <!-- ===================== Hero ===================== -->
+  <section class="hero">
+    <div class="hero__bg">
+      <img src={base + '/img/hero.jpg'} alt="" width="1800" height="1201" fetchpriority="high" />
+    </div>
+
+    <div class="wrap hero__in">
+      <p class="hero__eyebrow">Solar Components · Dubai, UAE</p>
+      <h1>Empowering Solar Innovation in MENA</h1>
+      <p class="hero__text">
+        At Green Matrix, we are committed to revolutionizing the solar energy sector in the
+        MENA region by providing highquality solar products essential for solar plant
+        development. As a trusted trading company, we bridge the gap between toptier
+        manufacturers and project developers, ensuring seamless access to premium solar
+        components
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--gold" href={base + '/about'}>More About Us</a>
+        <a class="btn btn--ghost" href={base + '/products'}>Browse Products</a>
+      </div>
+    </div>
+
+    <ul class="hero__facts">
+      <li><strong>One-stop</strong><span>shop for solar components</span></li>
+      <li><strong>MENA</strong><span>region coverage</span></li>
+      <li><strong>S-5!&nbsp;USA</strong><span>authorised distributor</span></li>
+    </ul>
+  </section>
+
+  <!-- ===================== Intro ===================== -->
+  <section class="section">
+    <div class="wrap intro">
+      <div data-reveal>
+        <p class="eyebrow">Who We Are</p>
+        <h2>{site.legalName}</h2>
+        <p class="lead">
+          We are dedicated to powering the future with <strong>high-quality, reliable, and
+          efficient solar energy solutions</strong>. As a <strong>one-stop shop</strong> for
+          solar components in the <strong>MENA region</strong>, we provide a comprehensive
+          range of products to meet the growing demand for renewable energy.
+        </p>
+        <ul class="checks intro__checks">
+          <li><strong>Specialized Supplier</strong> – Catering to residential, commercial, and industrial solar projects</li>
+          <li><strong>Industry Expertise</strong> – Deep understanding of solar technology and market trends</li>
+          <li><strong>Serving Professionals</strong> – Supporting EPC companies, contractors, developers, and installers</li>
+        </ul>
+        <a class="btn btn--primary intro__btn" href={base + '/about'}>Read our story</a>
+      </div>
+
+      <figure class="intro__media media" data-reveal>
+        <img src={base + '/img/panels.jpg'} alt="Rooftop solar panel array" width="1800" height="1012" loading="lazy" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===================== What we offer ===================== -->
+  <section class="section section--surface">
+    <div class="wrap">
+      <div class="head head--center" data-reveal>
+        <p class="eyebrow">What We Offer</p>
+        <h2>A wide range of high-quality solar components</h2>
+      </div>
+
+      <div class="grid grid--3" data-reveal>
+        {categories.map((c) => (
+          <article class="card">
+            <div class="card__icon"><Icon name={c.icon} /></div>
+            <h3>{c.name}</h3>
+            <p>{c.text}</p>
+          </article>
+        ))}
+
+        <article class="card card--cta">
+          <h3>Need something specific?</h3>
+          <p>Tell us about your project and we will source the right components for it.</p>
+          <a class="btn btn--primary btn--sm" href={base + '/contact'}>Talk to us</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Mission ===================== -->
+  <section class="section section--brand mission">
+    <div class="wrap mission__in" data-reveal>
+      <p class="eyebrow">Our Mission</p>
+      <p class="mission__text">
+        We aim to <strong>accelerate the adoption of solar energy</strong> by making
+        high-quality components <strong>accessible and affordable</strong>. Our goal is to
+        support businesses and individuals in transitioning to <strong>sustainable and
+        renewable energy solutions</strong>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== Why choose us ===================== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="head head--center" data-reveal>
+        <p class="eyebrow">Why Choose Us?</p>
+        <h2>Built on range, quality and expertise</h2>
+      </div>
+
+      <div class="reasons" data-reveal>
+        {reasons.map((r) => (
+          <div class="reason">
+            <span class="reason__icon"><Icon name={r.icon} /></span>
+            <div>
+              <h3>{r.title}</h3>
+              <p>{r.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Distributor strip ===================== -->
+  <section class="section section--tight">
+    <div class="wrap">
+      <a class="s5" href="https://www.s-5.com/how-to-buy/?regionId=5f64e83a1ff06d000afd4861" target="_blank" rel="noopener noreferrer" data-reveal>
+        <img src={base + '/img/s5-banner.jpg'} alt="S-5! USA" width="1800" height="450" loading="lazy" />
+        <div class="s5__label">
+          <span class="eyebrow">Authorised Distributor</span>
+          <strong>S-5! USA</strong>
+          <span class="s5__link">View the full product range →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===================== Contact ===================== -->
+  <section class="section section--surface" id="contact">
+    <div class="wrap contact">
+      <div data-reveal>
+        <p class="eyebrow">Contact us</p>
+        <h2>Interested in working together?</h2>
+        <p class="lead">
+          Fill out some info and we will be in touch shortly. We can’t wait to hear from you!
+        </p>
+
+        <div class="callbox">
+          <svg viewBox="0 0 512 512" aria-hidden="true"><path fill="currentColor" d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"/></svg>
+          <div>
+            <h3>For Further Inquiries Call</h3>
+            <a class="callbox__num" href={site.phoneHref}>{site.phone}</a>
+          </div>
+        </div>
+
+        <ul class="contact__meta">
+          <li>Email: <a href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li>Location: {site.address}</li>
+        </ul>
+      </div>
+
+      <div data-reveal>
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero { position: relative; isolation: isolate; color: #fff; }
+  .hero__bg { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+  .hero__bg img { width: 100%; height: 100%; object-fit: cover; }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(104deg, rgba(12, 18, 64, 0.95) 8%, rgba(26, 38, 121, 0.82) 48%, rgba(26, 38, 121, 0.35) 100%),
+      linear-gradient(to top, rgba(12, 18, 64, 0.75), transparent 45%);
+  }
+
+  .hero__in {
+    max-width: calc(var(--wrap) + var(--gutter) * 2);
+    padding-block: clamp(4.5rem, 12vw, 8.5rem) clamp(3rem, 7vw, 5rem);
+  }
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 1.1rem;
+    padding: 0.4rem 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--gold-300);
+  }
+  .hero h1 { max-width: 16ch; color: #fff; }
+  .hero h1::after {
+    content: '';
+    display: block;
+    width: 84px;
+    height: 4px;
+    margin-top: 1.3rem;
+    border-radius: 3px;
+    /* echoes the red swoosh + gold sun of the logo */
+    background: linear-gradient(90deg, var(--red-500) 0 40%, var(--gold-500) 40% 100%);
+  }
+  .hero__text {
+    max-width: 56ch;
+    margin-top: 1.5rem;
+    font-size: var(--step-1);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 2.2rem; }
+
+  .hero__facts {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px;
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    background: rgba(255, 255, 255, 0.16);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+  .hero__facts li {
+    display: grid;
+    gap: 0.15rem;
+    padding: 1.4rem var(--gutter);
+    background: rgba(12, 18, 64, 0.55);
+    backdrop-filter: blur(4px);
+  }
+  .hero__facts strong { font-size: var(--step-1); color: var(--gold-300); letter-spacing: -0.02em; }
+  .hero__facts span { font-size: 0.85rem; color: rgba(255, 255, 255, 0.78); }
+
+  /* ---------- Intro ---------- */
+  .intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  @media (max-width: 880px) { .intro { grid-template-columns: 1fr; } }
+  .intro__checks { margin-top: 1.8rem; }
+  .intro__btn { margin-top: 2rem; }
+  .intro__media img { aspect-ratio: 4 / 3; }
+
+  /* ---------- Cards ---------- */
+  .card--cta {
+    display: grid;
+    align-content: center;
+    gap: 0.3rem;
+    background: linear-gradient(150deg, var(--brand-700), var(--brand-900));
+    border-color: transparent;
+    color: #C9CFEA;
+  }
+  .card--cta h3 { color: #fff; }
+  .card--cta p { color: rgba(255, 255, 255, 0.78); }
+  .card--cta .btn { justify-self: start; margin-top: 0.9rem; background: var(--gold-500); border-color: var(--gold-500); color: var(--brand-950); }
+  .card--cta .btn:hover { background: var(--gold-300); border-color: var(--gold-300); }
+
+  /* ---------- Mission ---------- */
+  .mission { text-align: center; }
+  .mission__in { max-width: 70ch; margin-inline: auto; }
+  .mission__text { font-size: var(--step-2); line-height: 1.5; color: #D7DCF2; }
+  .mission__text strong { color: var(--gold-300); }
+
+  /* ---------- Reasons ---------- */
+  .reasons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: clamp(1.4rem, 3vw, 2.4rem);
+  }
+  .reason { display: grid; grid-template-columns: 48px 1fr; gap: 1.1rem; align-items: start; }
+  .reason__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    background: var(--brand-600);
+    color: #fff;
+  }
+  .reason__icon svg { width: 24px; height: 24px; }
+  .reason h3 { margin-bottom: 0.25rem; font-size: 1.04rem; }
+  .reason p { font-size: var(--step--1); }
+
+  /* ---------- S-5 strip ---------- */
+  .s5 {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    text-decoration: none;
+  }
+  .s5 img { width: 100%; aspect-ratio: 4 / 1; object-fit: cover; transition: transform 0.5s var(--ease); }
+  .s5:hover img { transform: scale(1.03); }
+  .s5__label {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    gap: 0.25rem;
+    padding: var(--gutter);
+    background: linear-gradient(90deg, rgba(12, 18, 64, 0.93) 30%, rgba(12, 18, 64, 0.1) 85%);
+    color: #fff;
+  }
+  .s5__label strong { font-size: var(--step-2); letter-spacing: -0.02em; }
+  .s5__link { font-size: 0.88rem; font-weight: 600; color: var(--gold-300); }
+  @media (max-width: 640px) {
+    .s5 img { aspect-ratio: 2 / 1; }
+    .s5__label { background: linear-gradient(0deg, rgba(12, 18, 64, 0.94) 35%, rgba(12, 18, 64, 0.55)); }
+  }
+
+  /* ---------- Contact ---------- */
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  @media (max-width: 880px) { .contact { grid-template-columns: 1fr; } }
+
+  .callbox {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    margin-top: 2.2rem;
+    padding: 1.3rem 1.5rem;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--gold-500);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+  }
+  .callbox svg { width: 26px; height: 26px; flex: none; color: var(--brand-600); }
+  .callbox h3 { margin: 0; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .callbox__num {
+    font-size: var(--step-1);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--brand-700);
+    text-decoration: none;
+  }
+  .callbox__num:hover { color: var(--brand-900); }
+
+  .contact__meta { margin: 1.4rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.4rem; font-size: var(--step--1); }
+</style>

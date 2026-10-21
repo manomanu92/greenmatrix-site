@@ -1,0 +1,241 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { products, categories } from '../data/products.js';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const s5Url = 'https://www.s-5.com/how-to-buy/?regionId=5f64e83a1ff06d000afd4861';
+---
+
+<Base
+  title="Products"
+  description="S-5! mounting solutions from Green Matrix — EdgeGrab, MidGrab, S-5-V, S-5-Z, Protea Bracket, RibBracket I-V and WindClamp, with datasheets to download."
+>
+  <PageHero
+    title="Products"
+    lead="S-5!® mounting and attachment solutions for metal roofs, plus the full range of solar components we supply across the MENA region."
+    image="/img/panels.jpg"
+  />
+
+  <!-- Distributor banner -->
+  <section class="section section--tight">
+    <div class="wrap">
+      <a class="s5" href={s5Url} target="_blank" rel="noopener noreferrer" data-reveal>
+        <img src={base + '/img/s5-banner.jpg'} alt="S-5! USA" width="1800" height="450" loading="lazy" />
+        <div class="s5__label">
+          <span class="eyebrow">Authorised Distributor of</span>
+          <strong>S-5! USA</strong>
+          <span class="s5__link">How to buy →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Category overview -->
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="head" data-reveal>
+        <p class="eyebrow">Component Categories</p>
+        <h2>Everything a solar project needs, under one roof</h2>
+      </div>
+      <div class="cats" data-reveal>
+        {categories.map((c) => (
+          <div class="cat">
+            <span class="cat__icon"><Icon name={c.icon} /></span>
+            <div>
+              <h3>{c.name}</h3>
+              <p>{c.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Product detail -->
+  <section class="section section--surface">
+    <div class="wrap">
+      <div class="head" data-reveal>
+        <p class="eyebrow">S-5!® Range</p>
+        <h2>Mounting &amp; attachment solutions</h2>
+      </div>
+
+      <div class="plist">
+        {products.map((p, i) => (
+          <article class="prod" id={p.slug} data-reveal>
+            <figure class="prod__media media">
+              <img src={base + p.image} alt={p.name} width="1250" height="938" loading={i < 2 ? 'eager' : 'lazy'} />
+            </figure>
+
+            <div class="prod__body">
+              <p class="prod__family">{p.family}</p>
+              <h3>{p.name}</h3>
+
+              <ul class="checks prod__features">
+                {p.features.map((f) => <li>{f}</li>)}
+              </ul>
+
+              {p.alternatives && (
+                <div class="prod__alt">
+                  <p>such as:</p>
+                  <ul>{p.alternatives.map((a) => <li>{a}</li>)}</ul>
+                </div>
+              )}
+
+              {p.variants && (
+                <dl class="prod__variants">
+                  {p.variants.map((v) => (
+                    <div>
+                      <dt>{v.name}</dt>
+                      <dd>{v.text}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+
+              <a class="btn btn--outline prod__dl" href={base + p.datasheet} target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 17v2.5A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5V17"/>
+                </svg>
+                Download Datasheet
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="wrap">
+      <div class="cta" data-reveal>
+        <div>
+          <h2>Need a quote or a product we haven’t listed?</h2>
+          <p>Green Matrix is your trusted partner. Tell us about your project and we’ll come back to you shortly.</p>
+        </div>
+        <a class="btn btn--gold" href={base + '/contact'}>Request a Quote</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------- S-5 banner ---------- */
+  .s5 {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    text-decoration: none;
+  }
+  .s5 img { width: 100%; aspect-ratio: 4 / 1; object-fit: cover; transition: transform 0.5s var(--ease); }
+  .s5:hover img { transform: scale(1.03); }
+  .s5__label {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-content: center;
+    gap: 0.25rem;
+    padding: var(--gutter);
+    background: linear-gradient(90deg, rgba(12, 18, 64, 0.93) 30%, rgba(12, 18, 64, 0.1) 85%);
+    color: #fff;
+  }
+  .s5__label .eyebrow { color: var(--gold-300); margin: 0; }
+  .s5__label strong { font-size: var(--step-2); letter-spacing: -0.02em; }
+  .s5__link { font-size: 0.88rem; font-weight: 600; color: var(--gold-300); }
+  @media (max-width: 640px) {
+    .s5 img { aspect-ratio: 2 / 1; }
+    .s5__label { background: linear-gradient(0deg, rgba(12, 18, 64, 0.94) 35%, rgba(12, 18, 64, 0.55)); }
+  }
+
+  /* ---------- Categories ---------- */
+  .cats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1.2rem, 3vw, 2rem);
+  }
+  .cat { display: grid; grid-template-columns: 44px 1fr; gap: 1rem; align-items: start; }
+  .cat__icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    background: var(--brand-50);
+    color: var(--brand-600);
+  }
+  .cat__icon svg { width: 22px; height: 22px; }
+  .cat h3 { margin-bottom: 0.15rem; font-size: 1rem; }
+  .cat p { margin: 0; font-size: var(--step--1); }
+
+  /* ---------- Product list ---------- */
+  .plist { display: grid; gap: clamp(1.5rem, 4vw, 2.5rem); }
+
+  .prod {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+    padding: clamp(1.4rem, 3vw, 2.2rem);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    scroll-margin-top: 110px;
+  }
+  @media (max-width: 880px) { .prod { grid-template-columns: 1fr; } }
+
+  .prod__media { position: sticky; top: 110px; box-shadow: var(--shadow-md); }
+  @media (max-width: 880px) { .prod__media { position: static; } }
+  .prod__media img { aspect-ratio: 4 / 3; }
+
+  .prod__family {
+    margin: 0 0 0.35rem;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--gold-600);
+  }
+  .prod h3 { font-size: var(--step-2); margin-bottom: 1.2rem; }
+  .prod__features li { font-size: var(--step--1); }
+
+  .prod__alt {
+    margin-top: 1.1rem;
+    padding-left: 2rem;
+    font-size: var(--step--1);
+  }
+  .prod__alt p { margin: 0 0 0.35rem; color: var(--muted); }
+  .prod__alt ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.2rem; }
+
+  .prod__variants { margin: 1.5rem 0 0; display: grid; gap: 0.85rem; }
+  .prod__variants > div {
+    padding-left: 1rem;
+    border-left: 3px solid var(--brand-100);
+  }
+  .prod__variants dt { font-weight: 700; color: var(--ink); font-size: 0.93rem; }
+  .prod__variants dd { margin: 0.1rem 0 0; font-size: var(--step--1); }
+
+  .prod__dl { margin-top: 1.7rem; background: var(--white); }
+  .prod__dl svg { width: 17px; height: 17px; }
+
+  /* ---------- CTA ---------- */
+  .cta {
+    display: grid;
+    grid-template-columns: 1.5fr auto;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    padding: clamp(2rem, 5vw, 3.2rem);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(120% 160% at 100% 0%, rgba(245, 196, 0, 0.22), transparent 55%),
+      linear-gradient(120deg, var(--brand-900), var(--brand-700));
+    color: #D7DCF2;
+  }
+  @media (max-width: 800px) { .cta { grid-template-columns: 1fr; justify-items: start; } }
+  .cta h2 { color: #fff; font-size: var(--step-2); }
+  .cta p { margin: 0; }
+</style>

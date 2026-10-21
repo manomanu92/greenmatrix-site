@@ -1,0 +1,213 @@
+---
+import { site } from '../data/site.js';
+
+// A static site has no PHP to post to. The form posts to the Google Apps
+// Script web app in ../../google-apps-script/, which appends a row to the
+// enquiries Sheet and emails a notification.
+//
+// Set PUBLIC_FORM_ENDPOINT to that deployment's /exec URL in .env and as a
+// GitHub Actions variable. Until it is set, the form degrades to a pre-filled
+// mailto: so no enquiry is ever silently lost.
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT || '';
+const token = import.meta.env.PUBLIC_FORM_TOKEN || '';
+const action = endpoint || `mailto:${site.email}`;
+const fields = [
+  { name: 'name', label: 'Full Name', type: 'text', autocomplete: 'name' },
+  { name: 'email', label: 'Email', type: 'email', autocomplete: 'email' },
+  { name: 'subject', label: 'Subject', type: 'text', autocomplete: 'off' },
+];
+---
+
+<form
+  class="cform"
+  action={action}
+  method="post"
+  data-endpoint={endpoint}
+  data-token={token}
+  novalidate
+>
+  <h3 class="visually-hidden">Enquiry form</h3>
+
+  {fields.map((f) => (
+    <p class="cform__row">
+      <label for={`f-${f.name}`}>{f.label} <span aria-hidden="true">*</span></label>
+      <input
+        id={`f-${f.name}`}
+        name={f.name}
+        type={f.type}
+        autocomplete={f.autocomplete}
+        maxlength="400"
+        required
+      />
+    </p>
+  ))}
+
+  <p class="cform__row">
+    <label for="f-message">Message <span aria-hidden="true">*</span></label>
+    <textarea id="f-message" name="message" rows="6" maxlength="2000" required></textarea>
+  </p>
+
+  <!-- Honeypot: bots fill it, people never see it. -->
+  <p class="cform__trap" aria-hidden="true">
+    <label for="f-company">Company</label>
+    <input id="f-company" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+  </p>
+
+  <button class="btn btn--primary cform__submit" type="submit">Submit Now</button>
+
+  <p class="cform__status" role="status" aria-live="polite"></p>
+</form>
+
+<style>
+  .cform {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.4rem, 3vw, 2.2rem);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+  }
+
+  .cform__row { display: grid; gap: 0.4rem; margin: 0; }
+
+  .cform label {
+    font-size: 0.82rem;
+    font-weight: 650;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+  .cform label span { color: var(--red-500); }
+
+  .cform input,
+  .cform textarea {
+    width: 100%;
+    padding: 0.78rem 0.95rem;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.16s var(--ease), background-color 0.16s var(--ease),
+                box-shadow 0.16s var(--ease);
+  }
+  .cform textarea { resize: vertical; min-height: 140px; }
+  .cform input:focus,
+  .cform textarea:focus {
+    outline: none;
+    background: var(--white);
+    border-color: var(--brand-500);
+    box-shadow: 0 0 0 3px var(--brand-100);
+  }
+  .cform input[aria-invalid='true'],
+  .cform textarea[aria-invalid='true'] {
+    border-color: var(--red-500);
+    box-shadow: 0 0 0 3px rgba(232, 16, 47, 0.12);
+  }
+
+  .cform__submit { justify-self: start; margin-top: 0.4rem; }
+  .cform__submit[disabled] { opacity: 0.6; pointer-events: none; }
+
+  .cform__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .cform__status { margin: 0; font-size: 0.9rem; font-weight: 600; }
+  .cform__status[data-state='ok'] { color: #0F7A3D; }
+  .cform__status[data-state='error'] { color: var(--red-600); }
+</style>
+
+<script>
+  document.querySelectorAll('.cform').forEach((form) => {
+    const status = form.querySelector('.cform__status');
+    const submit = form.querySelector('.cform__submit');
+    const endpoint = form.getAttribute('data-endpoint');
+
+    const setStatus = (text, state) => {
+      if (!status) return;
+      status.textContent = text;
+      if (state) status.setAttribute('data-state', state);
+      else status.removeAttribute('data-state');
+    };
+
+    const validate = () => {
+      let firstBad = null;
+      form.querySelectorAll('input[required], textarea[required]').forEach((el) => {
+        const ok = el.checkValidity();
+        el.setAttribute('aria-invalid', String(!ok));
+        if (!ok && !firstBad) firstBad = el;
+      });
+      return firstBad;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      const bad = validate();
+      if (bad) {
+        e.preventDefault();
+        setStatus('Please complete the highlighted fields.', 'error');
+        bad.focus();
+        return;
+      }
+
+      // No hosted endpoint configured — let the browser open the mail client.
+      if (!endpoint) {
+        setStatus('Opening your email app…');
+        return;
+      }
+
+      e.preventDefault();
+      setStatus('Sending…');
+      submit?.setAttribute('disabled', '');
+
+      const payload = new FormData(form);
+      payload.append('page', location.pathname);
+      payload.append('ua', navigator.userAgent);
+      const token = form.getAttribute('data-token');
+      if (token) payload.append('token', token);
+
+      const done = () => {
+        form.reset();
+        form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+        setStatus('Thank you — your message has been sent. We will be in touch shortly.', 'ok');
+      };
+      const failed = () =>
+        setStatus(
+          'Sorry, something went wrong. Please email contact@greenmatrixsolar.com or message us on WhatsApp.',
+          'error'
+        );
+
+      try {
+        // FormData keeps this a "simple" request, so no CORS preflight — which
+        // Apps Script would reject outright.
+        const res = await fetch(endpoint, { method: 'POST', body: payload });
+        const body = await res.json().catch(() => null);
+        if (body && body.ok === false) throw new Error(body.error || 'rejected');
+        if (!res.ok && !body) throw new Error(String(res.status));
+        done();
+      } catch (err) {
+        // A thrown fetch does NOT mean the request never arrived — when the
+        // browser blocks us from reading Apps Script's redirected response,
+        // the row has already landed. Retrying would duplicate it, so say
+        // honestly that delivery could not be confirmed.
+        if (err instanceof TypeError) {
+          form.reset();
+          setStatus(
+            'Your message was sent, but we could not confirm it. If you don’t hear back, please email contact@greenmatrixsolar.com.',
+            'ok'
+          );
+        } else {
+          failed();
+        }
+      } finally {
+        submit?.removeAttribute('disabled');
+      }
+    });
+
+    // Clear the invalid state as soon as the field is corrected.
+    form.addEventListener('input', (e) => {
+      const el = e.target;
+      if (el instanceof HTMLElement && el.hasAttribute('aria-invalid') && el.checkValidity()) {
+        el.setAttribute('aria-invalid', 'false');
+      }
+    });
+  });
+</script>
