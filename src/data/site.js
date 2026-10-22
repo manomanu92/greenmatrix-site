@@ -6,7 +6,7 @@ export const site = {
   phone: '+971 55 804 7101',
   phoneHref: 'tel:+971558047101',
   email: 'contact@greenmatrixsolar.com',
-  address: 'Jebel Ali FZ, Dubai, United Arab Emirates',
+  address: 'Dubai, United Arab Emirates',
   instagram: 'https://www.instagram.com/greenmatrix86/',
   // wa.me takes the number in full international form, digits only.
   whatsapp: 'https://wa.me/971558047101',
